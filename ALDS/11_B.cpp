@@ -55,7 +55,9 @@ int main(){
   for(int row_num=n-1; row_num>=0; row_num--){
       pair<int, int> p;
       p.first = -1; p.second = row_num; // visited from nowhere
+      cout << "<" << p.first << ", " << p.second << "> pushed into queue." << endl;
       edges.push(p);
+
     }
 
   int time = 1;
@@ -65,7 +67,7 @@ int main(){
     pair<int, int> edge;
     edge = edges.top(); edges.pop();
     int st, en; st = edge.first; en = edge.second;
-    //    cout << "visiting: " << en << " from: " << st << endl;
+    cout << "visiting: " << en << " from: " << st << endl;
     
     pair<int, int> path; 
     // record path to go back
@@ -74,7 +76,7 @@ int main(){
       // avoid inf loop: if the node is not finished, have to go back at some point
       if(f[path.second] == -1){
 	paths.push(path);
-	// cout << "<" << path.first << ", " << path.second << "> pushed as a path." << endl;
+	cout << "<" << path.first << ", " << path.second << "> pushed as a path." << endl;
       }
     }    
     
@@ -104,20 +106,21 @@ int main(){
       unvisited_node_num++;
       pair<int, int> next_edge; next_edge.first = en; next_edge.second = next_node;
       edges.push(next_edge);
-      // cout << "<" << next_edge.first << ", " << next_edge.second << "> pushed." << endl;
+      cout << "<" << next_edge.first << ", " << next_edge.second << "> pushed." << endl;
     }
 
     // if there are no unvisited linked nodes anymore, mark the node finished
     if(unvisited_node_num == 0){
       // cout << "going back..." << endl;
-      f[en] = time + 1;
       // cout << "f[" << en << "]: " << f[en] << endl;
-      
+      f[en] = time+1;      
       // way to go back
-      if(paths.empty()) break;
-      path = paths.top(); paths.pop();
-      edges.push(path);
-      // cout << "path pushed." << endl;
+      if(!paths.empty()){
+	path = paths.top(); paths.pop();
+	edges.push(path);
+	cout << "path pushed." << endl;
+
+      }
     }
     time++;
   }
